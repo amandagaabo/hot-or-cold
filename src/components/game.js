@@ -80,17 +80,21 @@ export default class Game extends React.Component {
   }
 
   render() {
+    let guessForm = <GuessForm max={this.state.max} min={this.state.min} value={this.state.currentGuess.number}
+      onSubmit={(e) => this.onSubmit(e)}
+      onChange={(currentGuess) => this.updateCurrentGuess(currentGuess)} />
+
     let playAgain = ""
+
     if(this.state.correct) {
+      guessForm = ""
       playAgain = <PlayAgain onClick={(e) => this.resetGame(e)} />
     }
 
     return (
       <div className="game-box">
         <h2><span className="hot">Hot</span> or <span className="cold">Cold</span></h2>
-        <GuessForm max={this.state.max} min={this.state.min} value={this.state.currentGuess.number}
-          onSubmit={(e) => this.onSubmit(e)}
-          onChange={(currentGuess) => this.updateCurrentGuess(currentGuess)} />
+        {guessForm}
         <Results guesses={this.state.allGuesses} result={this.state.currentGuess.result}/>
         {playAgain}
       </div>
