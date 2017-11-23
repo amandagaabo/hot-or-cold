@@ -18,6 +18,11 @@ export default class Game extends React.Component {
       allGuesses: [],
       correct: false
     }
+
+    //Setup proper "this" bindings so functions below have access to "this"
+    this.updateCurrentGuess = this.updateCurrentGuess.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.resetGame = this.resetGame.bind(this);
   }
 
   generateRandom() {
@@ -26,48 +31,36 @@ export default class Game extends React.Component {
 
   updateCurrentGuess(number) {
     const target = this.state.targetNumber
-    const guess = parseInt(number, 10)
 
     let result
-    if (guess === target) {
+    if (number === target) {
       result = "correct"
-    } else if (guess < target - 5 || guess > target + 5) {
+    } else if (number < target - 5 || number > target + 5) {
       result = "cold"
-    } else if (guess >= target - 5 && guess <= target + 5) {
+    } else if (number >= target - 5 && number <= target + 5) {
       result = "hot"
     }
 
-    const currentGuess = {
-      number: guess,
-      result: result
-    }
-
     this.setState(
-      {currentGuess}
+      {currentGuess: {number, result}}
     );
   }
 
-  onSubmit(e) {
-    e.preventDefault()
-
+  onSubmit() {
     const allGuesses = [...this.state.allGuesses, this.state.currentGuess]
     const currentGuess = {
       number: "",
       result: ""
     }
-    let correct = false
-    if (this.state.currentGuess.result === "correct") {
-      correct = true
-    }
+
+    const correct = this.state.currentGuess.result === "correct";
 
     this.setState(
       {allGuesses, currentGuess, correct}
     );
   }
 
-  resetGame(e) {
-    e.preventDefault()
-
+  resetGame() {
     this.setState({
       targetNumber: this.generateRandom(),
       currentGuess: {
@@ -80,23 +73,29 @@ export default class Game extends React.Component {
   }
 
   render() {
-    let guessForm = <GuessForm max={this.state.max} min={this.state.min} value={this.state.currentGuess.number}
-      onSubmit={(e) => this.onSubmit(e)}
-      onChange={(currentGuess) => this.updateCurrentGuess(currentGuess)} />
+    const guessForm =
+      <GuessForm
+        max={this.state.max}
+        min={this.state.min}
+        value={this.state.currentGuess.number}
+        onSubmit={this.onSubmit}
+        onChange={this.updateCurrentGuess} />
+      // previously used:
+      // onSubmit={(e) => this.onSubmit(e)}
+      // onChange={(currentGuess) => this.updateCurrentGuess(currentGuess)}
+      // this creates an anonoymous function every time the page is rendered and gives access to "this"
+      // the downside is that everytime the page is rendered, the function is created which means
+      // the props onSubmit and onChange are changed and when props change the render runs again
+      // above the function is passed in as a prop and binding is setup in the constructor at the beginning
 
-    let playAgain = ""
-
-    if(this.state.correct) {
-      guessForm = ""
-      playAgain = <PlayAgain onClick={(e) => this.resetGame(e)} />
-    }
+    const playAgain = <PlayAgain onClick={this.resetGame} />
 
     return (
       <div className="game-box">
         <h2><span className="hot">Hot</span> or <span className="cold">Cold</span></h2>
-        {guessForm}
+        {this.state.correct ? null : guessForm}
         <Results guesses={this.state.allGuesses} result={this.state.currentGuess.result}/>
-        {playAgain}
+        {this.state.correct ? playAgain : null}
       </div>
     );
   }
