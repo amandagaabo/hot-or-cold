@@ -1,0 +1,14 @@
+body {
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.hot {
+  color: red;
+}
+
+.cold {
+  color: blue;
+}

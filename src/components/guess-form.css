@@ -1,0 +1,4 @@
+.guess-input, .guess-button {
+  display: block;
+  margin: 10px auto;
+}
