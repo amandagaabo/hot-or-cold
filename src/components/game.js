@@ -5,26 +5,28 @@ import GuessForm from './guess-form'
 import Results from './results'
 import PlayAgain from './play-again'
 
+const DEFAULT_MAX = 100;
+const DEFAULT_MIN = 0;
+
 export default class Game extends React.Component {
 
   constructor(props) {
     super(props);
+
+    // initialize state
     this.state = {
-      targetNumber: randomNumber(0, 100),
-      max: 100,
-      min: 0,
-      currentGuess: {
-        number: "",
-        result: ""
-      },
-      allGuesses: [],
-      correct: false
+      max: DEFAULT_MAX,
+      min: DEFAULT_MIN
     }
 
     //Setup proper "this" bindings so functions below have access to "this"
     this.updateCurrentGuess = this.updateCurrentGuess.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.resetGame = this.resetGame.bind(this);
+  }
+
+  componentWillMount() {
+    this.resetGame();
   }
 
   updateCurrentGuess(number) {
