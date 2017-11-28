@@ -1,14 +1,16 @@
 import React from 'react';
 import './game.css';
+import randomNumber from './utils/random-number'
 import GuessForm from './guess-form'
 import Results from './results'
 import PlayAgain from './play-again'
 
 export default class Game extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      targetNumber: this.generateRandom(),
+      targetNumber: randomNumber(0, 100),
       max: 100,
       min: 0,
       currentGuess: {
@@ -23,10 +25,6 @@ export default class Game extends React.Component {
     this.updateCurrentGuess = this.updateCurrentGuess.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.resetGame = this.resetGame.bind(this);
-  }
-
-  generateRandom() {
-    return Math.floor(Math.random() * 101)
   }
 
   updateCurrentGuess(number) {
@@ -62,7 +60,7 @@ export default class Game extends React.Component {
 
   resetGame() {
     this.setState({
-      targetNumber: this.generateRandom(),
+      targetNumber: randomNumber(this.state.min, this.state.max),
       currentGuess: {
         number: "",
         result: ""

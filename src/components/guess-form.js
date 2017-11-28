@@ -8,7 +8,7 @@ export default function GuessForm(props) {
     if (!guess) {
       return;
     }
-    
+
     props.onChange(parseInt(guess, 10));
   }
 
@@ -19,7 +19,7 @@ export default function GuessForm(props) {
 
   return (
     <div className="guess-form">
-      <p>Guess a number between 0 & 100</p>
+      <p>Guess a number between {props.min} & {props.max}</p>
       <form className="guess-form" onSubmit={handleSubmit}>
         <input type="number" className="guess-input"
           max={props.max}

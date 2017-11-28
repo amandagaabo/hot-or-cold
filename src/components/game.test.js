@@ -8,13 +8,6 @@ describe('<Game />', () => {
       shallow(<Game />);
   });
 
-  it('Handles generateRandom()', () => {
-    const wrapper = shallow(<Game />);
-    wrapper.instance().generateRandom();
-    expect(wrapper.state('targetNumber')).toBeGreaterThan(0);
-    expect(wrapper.state('targetNumber')).toBeLessThan(101);
-  });
-
   it('Handles updateCurrentGuess()', () => {
     const wrapper = shallow(<Game />);
     wrapper.setState({
@@ -69,8 +62,8 @@ describe('<Game />', () => {
     wrapper.update()
 
     wrapper.instance().resetGame()
-    expect(wrapper.state('targetNumber')).toBeGreaterThan(0);
-    expect(wrapper.state('targetNumber')).toBeLessThan(101);
+    expect(wrapper.state('targetNumber')).toBeGreaterThanOrEqual(0);
+    expect(wrapper.state('targetNumber')).toBeLessThanOrEqual(100);
     expect(wrapper.state('currentGuess')).toEqual({'number': "", 'result': ""})
     expect(wrapper.state('allGuesses')).toEqual([])
   });
