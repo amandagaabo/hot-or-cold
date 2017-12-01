@@ -1,6 +1,6 @@
-export default function randomNumber(min, max) {
+export default function randomNumber(min, max, rand=Math.random) {
   if (min < max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(rand() * (max - min + 1)) + min;
   } else {
     throw new Error('invalid min and max values')
   }
